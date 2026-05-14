@@ -5,35 +5,35 @@
 namespace gdv::losses {
 
 double MSELoss::compute(
-        const std::vector<double>& y_true,
-        const std::vector<double>& y_pred) const {
+    const std::vector<double>& y_true,
+    const std::vector<double>& y_pred) const {
 
-        assert(y_true.size() == y_pred.size());
-        size_t n = y_true.size();
-        double counter_sum = 0.0;
+    assert(y_true.size() == y_pred.size());
+    size_t n = y_true.size();
+    double counter_sum = 0.0;
 
-        for (size_t i = 0; i < n; i++) {
-                double diff = y_pred[i] - y_true[i];
-                counter_sum += diff * diff;
-        }
+    for (size_t i = 0; i < n; i++) {
+        double diff = y_pred[i] - y_true[i];
+        counter_sum += diff * diff;
+    }
 
-        return counter_sum / n;
+    return counter_sum / n;
 }
 
 std::vector<double> MSELoss::gradient(
-        const std::vector<double>& y_true,
-        const std::vector<double>& y_pred) const {
+    const std::vector<double>& y_true,
+    const std::vector<double>& y_pred) const {
 
-        assert(y_true.size() == y_pred.size());
-        size_t n = y_true.size();
-        std::vector<double> grad(n);
-        double factor = 2.0 / n;
+    assert(y_true.size() == y_pred.size());
+    size_t n = y_true.size();
+    std::vector<double> grad(n);
+    double factor = 2.0 / n;
 
-        for (size_t i = 0; i < n; ++i) {
-                grad[i] = factor * (y_pred[i] - y_true[i]);
-        }
+    for (size_t i = 0; i < n; ++i) {
+        grad[i] = factor * (y_pred[i] - y_true[i]);
+    }
 
-        return grad;        
+    return grad;        
 }
 
 }  // namespace gdv::losses

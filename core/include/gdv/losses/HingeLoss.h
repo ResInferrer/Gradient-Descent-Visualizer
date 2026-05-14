@@ -7,10 +7,10 @@ namespace gdv::losses {
 class HingeLoss : public ILossFunction {
 public:
    double compute(const std::vector<double>& y_true,
-                   const std::vector<double>& y_pred) const override;
+                  const std::vector<double>& y_pred) const override;
 
     std::vector<double> gradient(const std::vector<double>& y_true,
-                                  const std::vector<double>& y_pred) const override;
+                                 const std::vector<double>& y_pred) const override;
 };
 
 }  // namespace gdv::losses

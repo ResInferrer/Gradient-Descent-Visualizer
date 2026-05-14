@@ -14,7 +14,7 @@ public:
 
     // Calculate gradient from predictions
     virtual std::vector<double> gradient(const std::vector<double>& y_true,
-                                          const std::vector<double>& y_pred) const = 0;
+                                         const std::vector<double>& y_pred) const = 0;
 };
 
 }  // namespace gdv::losses
