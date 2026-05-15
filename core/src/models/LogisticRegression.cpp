@@ -28,7 +28,7 @@ void LogisticRegression::fit(const std::vector<std::vector<double>>& X,
     bias_ = 0.0;
     
     for (int iter = 0; iter < iterations; ++iter) {
-        // Вычисляем градиенты и текущий лосс
+        // Calculate gradients and current loss
         GradientResult grad = compute_loss_and_gradient(X, y);
         
         // Add L2 regularization to weight gradients (but not to bias)
@@ -64,12 +64,7 @@ int LogisticRegression::predict(const std::vector<double>& X_row, double thresho
     }
 
     double p = sigmoid(z);
-
-    if (p >= threshold) {
-        return 1;
-    } else {
-        return 0;
-    }
+    return (p >= threshold) ? 1 : 0;
 }
 
 #pragma endregion
