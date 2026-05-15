@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gdv/losses/BinaryCrossEntropy.h"
 #include <vector>
 #include <memory>
 
@@ -33,6 +34,7 @@ private:
 
     std::vector<double> weights_;
     double bias_;  
+    std::unique_ptr<gdv::losses::ILossFunction> loss_fn_;
 };
 
 } // namespace gdv::models

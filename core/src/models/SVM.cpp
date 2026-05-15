@@ -6,9 +6,8 @@
 namespace gdv::models {
 
 SVM::SVM() 
-    : weights_(), bias_(0.0) 
-{
-}
+    : weights_(), bias_(0.0),
+      loss_fn_(std::make_unique<gdv::losses::HingeLoss>()) {}
 
 #pragma region Public API
 
@@ -67,43 +66,43 @@ double SVM::hinge_loss_and_subgradient(const std::vector<std::vector<double>>& X
                                        std::vector<double>& grad_w,
                                        double& grad_b) const {
     size_t n_samples = X.size();
-    size_t n_features = (n_samples == 0) ? 0 : X[0].size();
+    size_t n_features = X.empty() ? 0 : X[0].size();
     
-    // Initialize gradients
+    // Predictions (decisive function)
+    std::vector<double> y_pred(n_samples);
+    for (size_t i = 0; i < n_samples; ++i) {
+        double f = bias_;
+        for (size_t j = 0; j < n_features; ++j)
+            f += weights_[j] * X[i][j];
+        y_pred[i] = f;
+    }
+    
+    // Convert y (int) to vector<double> for loss_fn
+    std::vector<double> y_true_double(y.begin(), y.end());
+    
+    // loss and gradient according to predictions
+    double loss = loss_fn_->compute(y_true_double, y_pred);
+    std::vector<double> grad_pred = loss_fn_->gradient(y_true_double, y_pred);
+    
+    // Gradients by weights and bias
     grad_w.assign(n_features, 0.0);
     grad_b = 0.0;
-    double loss = 0.0;
-    
-    // Regularization part of losses
-    double reg_loss = 0.0;
-    for (double w : weights_) {
-        reg_loss += w * w;
+    for (size_t i = 0; i < n_samples; ++i) {
+        double g = grad_pred[i];
+        grad_b += g;
+        for (size_t j = 0; j < n_features; ++j) {
+            grad_w[j] += g * X[i][j];
+        }
     }
+    
+    // regularization
+    double reg_loss = 0.0;
+    for (double w : weights_) reg_loss += w * w;
     reg_loss *= 0.5;
     loss += reg_loss;
     
-    // Subgradients from regularization
     for (size_t j = 0; j < n_features; ++j) {
-        grad_w[j] = weights_[j];
-    }
-    
-    // Loop through training examples
-    for (size_t i = 0; i < n_samples; ++i) {
-        double f = bias_;
-        for (size_t j = 0; j < n_features; ++j) {
-            f += weights_[j] * X[i][j];
-        }
-        double margin = y[i] * f;
-        
-        if (margin < 1.0) {
-            loss += C * (1.0 - margin);
-            
-            for (size_t j = 0; j < n_features; ++j) {
-                grad_w[j] -= C * y[i] * X[i][j];
-            }
-
-            grad_b -= C * y[i];
-        }
+        grad_w[j] += weights_[j];
     }
     
     return loss;

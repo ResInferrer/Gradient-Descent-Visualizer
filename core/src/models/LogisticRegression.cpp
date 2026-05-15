@@ -5,9 +5,8 @@
 namespace gdv::models{
 
 LogisticRegression::LogisticRegression() 
-    : weights_(), bias_(0.0) 
-{
-}
+    : weights_(), bias_(0.0),
+      loss_fn_(std::make_unique<gdv::losses::BinaryCrossEntropy>()) {}
 
 #pragma region Public API
 
@@ -76,41 +75,33 @@ GradientResult LogisticRegression::compute_loss_and_gradient(
     const std::vector<double>& y_true) const 
 {
     size_t n_samples = X.size();
-    size_t n_features = (n_samples == 0) ? 0 : X[0].size();
+    size_t n_features = X.empty() ? 0 : X[0].size();
+    
+    std::vector<double> proba(n_samples);
+    for (size_t i = 0; i < n_samples; ++i) {
+        double z = bias_;
+        for (size_t j = 0; j < n_features; ++j)
+            z += weights_[j] * X[i][j];
+        proba[i] = sigmoid(z);
+    }
+    
+    double loss = loss_fn_->compute(y_true, proba);
+    std::vector<double> grad_proba = loss_fn_->gradient(y_true, proba);
+    
+    std::vector<double> grad_weights(n_features, 0.0);
+    double grad_bias = 0.0;
+    for (size_t i = 0; i < n_samples; ++i) {
+        double p = proba[i];
+        double dz = grad_proba[i] * p * (1.0 - p);
+        grad_bias += dz;
+        for (size_t j = 0; j < n_features; ++j)
+            grad_weights[j] += dz * X[i][j];
+    }
     
     GradientResult result;
-    result.loss = 0.0;
-    result.grad_weights.assign(n_features, 0.0);
-    result.grad_bias = 0.0;
-    
-    for (size_t i = 0; i < n_samples; ++i) {
-        // Calculate linear combination
-        double z = bias_;
-        for (size_t j = 0; j < n_features; ++j) {
-            z += weights_[j] * X[i][j];
-        }
-        double prob = sigmoid(z);
-        
-        // Cross-entropy loss
-        result.loss += - (y_true[i] * std::log(prob + 1e-15) + 
-                         (1 - y_true[i]) * std::log(1 - prob + 1e-15));
-        
-        // Gradients (without regularization)
-        double error = prob - y_true[i];
-        for (size_t j = 0; j < n_features; ++j) {
-            result.grad_weights[j] += error * X[i][j];
-        }
-        result.grad_bias += error;
-    }
-    
-    // Averaging
-    double inv_n = 1.0 / n_samples;
-    result.loss *= inv_n;
-    for (size_t j = 0; j < n_features; ++j) {
-        result.grad_weights[j] *= inv_n;
-    }
-    result.grad_bias *= inv_n;
-    
+    result.loss = loss;
+    result.grad_weights = std::move(grad_weights);
+    result.grad_bias = grad_bias;
     return result;
 }
 
