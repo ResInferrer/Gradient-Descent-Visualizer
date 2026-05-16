@@ -1,13 +1,13 @@
-[project]
-name = "gradient-descent-visualizer"
-version = "0.1.0"
-requires-python = ">=3.10"
-dependencies = []
-
 [build-system]
-requires = ["setuptools>=64"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["scikit-build-core>=0.5.0", "pybind11>=2.10"]
+build-backend = "scikit_build_core.build"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["core*", "configs*"]
+[project]
+name = "gdv_vis"
+version = "0.1.0"
+description = "Gradient Descent Visualizer — C++ core with Python bindings"
+requires-python = ">=3.8"
+
+[tool.scikit-build]
+cmake.build-type = "Release"
+wheel.py-api = "py3"
