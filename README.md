@@ -32,9 +32,6 @@ source venv/bin/activate
 **Install the project in development mode:**
 ```
 pip install -e .
-
-# Alternatively, if only requirements.txt:
-pip install -r requirements.txt
 ```
 
 **Launch an entry point:**
@@ -44,11 +41,17 @@ pip install -r requirements.txt
 
 TODO: docker!
 
+**Launch a test python:**
+```
+python -m tests.test_core
+```
+
 ## **Folder structure:**
 ```
 Gradient-Descent-Visualizer/
 ├── core/                                 # C++ computational core
 │   ├── bindings/                         
+│   │   ├── CMakeLists.txt
 │   │   └── pybind_wrapper.cpp            # Export classes and functions to Python
 │   ├── include/                          
 │   │   └── gdv/                          
@@ -82,10 +85,7 @@ Gradient-Descent-Visualizer/
 │       └── runner.py                     # Glue: calls C++ module and updates plots
 │
 ├── tests/
-│   ├── cpp/
-│   │   └── main.cpp                      # Temporary C++ core test
-│   └── python/
-│       └── test_core.py                  # Test calling a module from Python
+│   └── test_core.py                      # Test calling a module from Python
 │
 ├── configs/
 │   ├── default_dataset.yaml              # Data generation parameters (points, spread)
@@ -95,7 +95,7 @@ Gradient-Descent-Visualizer/
 │   ├── architecture.md                   # Architectural overview (C++/Python integration)
 │   └── usage.md                          # Setup and launch instructions
 │
-├── main.py                                   # Application entry point
+├── main.py                               # Application entry point
 ├── CMakeLists.txt                        # Root CMake (manages entire C++ build)
 ├── Dockerfile                            
 ├── requirements.txt                      
