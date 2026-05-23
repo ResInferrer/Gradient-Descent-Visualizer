@@ -1,6 +1,6 @@
 """Gradient Descent Visualizer — entry point."""
+from python.gdv_vis import runner
 
 
 if __name__ == "__main__":
-    ...
-    #main()
+    runner.Runner.run()
