@@ -2,7 +2,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 import gdv_vis
-from data_generator import DataGenerator
+from .data_generator import DataGenerator
 
 
 class Runner():
@@ -38,17 +38,17 @@ class Runner():
         choice = int(input("Choice (int): "))
         while True:
             if choice == 0:
-                print("Logistic Regrssion\n")
-                self.logistic_regression(self)
+                print("\nLogistic Regrssion\n")
+                self.logistic_regression()
                 break
             elif choice == 1:
-                print("Support Vector Machine (SVM)\n")
-                self.svm(self)
+                print("\nSupport Vector Machine (SVM)\n")
+                self.svm()
                 break
             else:
                 print("No, we need numbers here.")
                 print("Write 0 if you need to use logistic regression,")
-                print("or 1 if you need Support Vector Machine (SVM)")
+                print("or 1 if you need Support Vector Machine (SVM)\n")
                 choice = int(input("Choice (int): "))
 
 
