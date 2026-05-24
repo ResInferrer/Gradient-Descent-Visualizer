@@ -5,11 +5,10 @@
 TODO: fill out the readme
 
 ## **Overview**  
-- An interactive tool for visualizing logistic regression, gradient descent, and regularization in action.  
+- Visualization of logistic regression and SVM.
 - The computational core (loss calculation, gradients, and weight updates) is written in **C++** and wrapped as a Python module using **pybind11**.  
 - The user interface and graphics are implemented in **Python** (`matplotlib`, `numpy`).  
 - The application runs inside a **Docker** container, ensuring a fully reproducible environment.  
-- Thanks to the C++ backend, the tool can handle datasets of **over 100K points** without performance degradation.
 
 ## **Quick Start**
 **Clone and set up the project:**
@@ -36,11 +35,12 @@ pip install -e .
 
 **Launch an entry point:**
 ```
-# TODO: add the entry point
+python main.py
 ```
 
 TODO: docker!
 
+## **Tests**
 **Launch a test python:**
 ```
 python -m tests.test_core
@@ -82,14 +82,15 @@ Gradient-Descent-Visualizer/
 │       ├── __init__.py
 │       ├── data_generator.py            
 │       ├── visualizer.py                 
-│       └── runner.py                     # Glue: calls C++ module and updates plots
+│       └── runner.py                     # Glue: calls C++ module, dataset generation and visualization
 │
 ├── tests/
 │   └── test_core.py                      # Test calling a module from Python
 │
-├── configs/
-│   ├── default_dataset.yaml              # Data generation parameters (points, spread)
-│   └── viz_settings.yaml                 # Colors, window size, axis limits
+├── graph/                                # Visualization of models: metrics, features on a graph, etc.
+│   ├── logistic_regression_binary.png
+│   ├── logistic_regression_multiclass.png
+│   └── svm_binary.png
 │
 ├── docs/
 │   ├── architecture.md                   # Architectural overview (C++/Python integration)
