@@ -1,4 +1,3 @@
-```markdown
 # Gradient Descent Visualizer
 
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
@@ -15,14 +14,20 @@ The project can be run natively on Linux/macOS/Windows or inside a **Docker** co
 
 ## Table of Contents
 
-- [Requirements](#requirements)
-- [Local Installation (without Docker)](#local-installation-without-docker)
-  - [Linux / macOS](#linux--macos)
-  - [Windows](#windows)
-- [Running the Application Locally](#running-the-application-locally)
-- [Running with Docker](#running-with-docker)
-- [Running Tests](#running-tests)
-- [Project Structure](#project-structure)
+- [Gradient Descent Visualizer](#gradient-descent-visualizer)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Local Installation (without Docker)](#local-installation-without-docker)
+    - [Linux / macOS](#linux--macos)
+    - [Windows](#windows)
+  - [Running the Application Locally](#running-the-application-locally)
+  - [Running with Docker](#running-with-docker)
+    - [Build the Docker image](#build-the-docker-image)
+    - [Run the container interactively](#run-the-container-interactively)
+  - [Running Tests](#running-tests)
+  - [Project Structure](#project-structure)
+  - [Notes](#notes)
+  - [License](#license)
 
 ---
 
@@ -199,4 +204,3 @@ Gradient-Descent-Visualizer/
 ## License
 
 This project is distributed under the MIT License. See the `LICENSE` file for details.
-```
